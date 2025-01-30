@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "polyglot blog application that showcases MetaCall's ability to integrate different languages seamlessly.",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
@@ -28,6 +27,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "http-status-codes": "^2.3.0",
+    "metacall": "^0.4.3",
     "mongoose": "^8.9.5"
   }
 }

@@ -1,17 +1,22 @@
 // setup server
-import express, { urlencoded, json } from 'express';
-var app = express();
+const express = require('express');
+const app = express();
+
 // .env
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 dotenv.config();
+
 // db
-import connectDB from './services/database/connection.js';
+const connectDB = require('./services/database/connection');
+
 // route
-import postRoute from './routes/post.js';
+const postRoute = require('./routes/post');
+
 // parse application/x-www-form-urlencoded
-app.use(urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }));
+
 // parse application/json
-app.use(json());
+app.use(express.json());
 
 app.use("/api/v1", postRoute);
 
@@ -29,5 +34,3 @@ const start = async () => {
 };
 
 start();
-
-
