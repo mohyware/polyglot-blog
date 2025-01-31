@@ -4,7 +4,7 @@ const path = require('path')
 
 // Load Python script scraping.py
 // metacall_load_from_file('py', ['../python/huggingface.py']);
-metacall_load_from_file('py', [path.resolve('huggingface.py')]);
+metacall_load_from_file('py', [path.resolve('./src/python/huggingface.py')]);
 
 const summarize = async (data) => {
     const response = await metacall('get_model_response', data);
