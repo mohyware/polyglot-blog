@@ -10,7 +10,6 @@ const PostSchema = new mongoose.Schema(
         body: {
             type: String,
             required: [true, 'Please provide Body'],
-            maxlength: 500,
         },
         createdBy: {
             type: String,

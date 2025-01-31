@@ -12,6 +12,10 @@ const connectDB = require('./services/database/connection');
 // route
 const postRoute = require('./routes/post');
 
+//  cors
+const cors = require('cors');
+app.use(cors());
+
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
 
