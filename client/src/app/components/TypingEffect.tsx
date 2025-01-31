@@ -10,7 +10,7 @@ export default function TypingEffect({ text, speed = 10 }: TypingEffectProps) {
     useEffect(() => {
         let i = 0;
         const interval = setInterval(() => {
-            if (i < text.length) {
+            if (i < text.length - 1) {
                 setDisplayedText((prev) => prev + text[i]);
                 i++;
             } else {

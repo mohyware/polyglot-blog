@@ -3,11 +3,23 @@ import { useState, useEffect, useRef } from "react";
 import { SummarizePost } from "../lib/data";
 
 import TypingEffect from "./TypingEffect";
+
+function extractHashtags(text: string) {
+    return text.match(/#\w+/g) || [];
+}
+
+function removeAfterSummary(text: string): string {
+    const pattern = /## Summary:[\s\S]*?(?=\n## Important Topics:|$)/;
+    const match = text.match(pattern);
+    return match ? match[0].trim() : text;
+}
+
 export default function SummarizeButton({ id, title }: { id: string; title: string }) {
     const [isOpen, setIsOpen] = useState(false);
     const [summary, setSummary] = useState("");
     const [isFetching, setIsFetching] = useState(false);
     const [hasFetched, setHasFetched] = useState(false);
+    const [hashtags, setHashtags] = useState<string[]>([]);
 
     const modalRef = useRef<HTMLDivElement>(null);
 
@@ -36,8 +48,10 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
             setIsFetching(true);
             try {
                 const result = await SummarizePost(id);
-                setSummary(result);
+                setSummary(removeAfterSummary(result));
+                console.log(removeAfterSummary(result))
                 setHasFetched(true);
+                setHashtags(extractHashtags(result));
             } catch (error) {
                 console.error("Failed to fetch summary:", error);
             } finally {
@@ -103,9 +117,10 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
                         <TypingEffect text={summary} />
                     </div>
                     <div className="px-6 pt-4 pb-2">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+                        {hashtags.map((hashtag, index) => (
+                            <span key={index} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{hashtag}</span>
+
+                        ))}
                     </div>
                 </div>
             )}
