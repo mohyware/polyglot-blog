@@ -9,7 +9,7 @@ The backend of this polyglot blog application will be responsible for managing b
 ## Requirements
 Ensure you have the following installed before running the application:
 1. Nodejs
-2. [metacall](https://github.com/metacall/install)
+2. [Metacall CLI](https://github.com/metacall/install)
 
 ## Environment Configuration
 Before running the project, navigate to the server directory, rename .env.example to .env, and add your configurations like:
@@ -25,32 +25,36 @@ HUGGING_FACE_KEY=your_huggingface_api_key
 git clone https://github.com/mohyware/polyglot-blog
 ```
 
-2. Install MetaCall CLI:
+2. Install MetaCall CLI [(More Info)](https://github.com/metacall/install):
 
 ```sh
 curl -sL https://raw.githubusercontent.com/metacall/install/master/install.sh | sh
 ```
 3. Backend (Server) Setup
 ```bash
-cd Server
+cd server
 metacall npm install
 metacall pip3 install dotenv huggingface_hub
-
-# To Run
-npm run dev  # Start development mode
-# OR
-npm start    # Run production mode
 ```
 4. Frontend (Client) Setup
 ```bash
 cd client
 npm install
-
-# To Run
+```
+## Usage
+1. Start the Backend Server
+```bash
+cd server
+npm run dev  # Start development mode
+# OR
+npm start    # Run production mode
+```
+2. Start the Frontend Client
+```bash
+cd client
 npm run dev  # Start development mode
 # OR
 npm run build  # Build the project before running start
 npm start      # Run production mode
 ```
-## Usage
-Open your browser and navigate to http://localhost:3000
+3. Open your browser and navigate to http://localhost:3000
