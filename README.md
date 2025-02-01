@@ -22,7 +22,7 @@ HUGGING_FACE_KEY=your_huggingface_api_key
 1. Clone the repository:
 
 ```sh
-git clone https://github.com/mohyware/polyglot-blog-example
+git clone https://github.com/mohyware/polyglot-blog
 ```
 
 2. Install MetaCall CLI:
