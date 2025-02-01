@@ -6,7 +6,7 @@ export async function fetchPost(id: string) {
         return data.post;
     } catch (error) {
         console.error('Database Error:', error);
-        throw new Error('Failed to fetch revenue data.');
+        throw new Error('Failed to fetch post data.');
     }
 }
 
@@ -18,7 +18,7 @@ export async function fetchPosts() {
         return data;
     } catch (error) {
         console.error('Database Error:', error);
-        throw new Error('Failed to fetch revenue data.');
+        throw new Error('Failed to fetch posts data.');
     }
 }
 
@@ -29,6 +29,6 @@ export async function SummarizePost(id: string) {
         return data.summary;
     } catch (error) {
         console.error('Database Error:', error);
-        throw new Error('Failed to fetch revenue data.');
+        throw new Error('Failed to fetch summarized post data.');
     }
 }

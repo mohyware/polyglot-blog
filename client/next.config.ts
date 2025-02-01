@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['next-mdx-remote'],
+    staticPageGenerationTimeout: 1000,
+
 };
 
 export default nextConfig;

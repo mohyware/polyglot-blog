@@ -100,7 +100,7 @@ export async function updatePost(id: string,
     redirect('/dashboard');
 }
 
-export async function deletePost(id: string) {
+export async function deletePost(id: string): Promise<void> {
     try {
         const response = await fetch(`http://localhost:4000/api/v1/${id}`, {
             method: 'DELETE',
@@ -111,9 +111,8 @@ export async function deletePost(id: string) {
         if (!response.ok) {
             throw new Error(`HTTP Error! Status: ${response.status}`);
         }
+        revalidatePath('/dashboard');
     } catch (error) {
         console.error(error);
-        return { message: 'Server Error: Failed to Delete Blog.' };
-
     }
 }
