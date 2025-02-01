@@ -53,6 +53,7 @@ export async function createPost(prevState: State, formData: FormData) {
         };
     }
     revalidatePath('/dashboard');
+    revalidatePath('/');
     redirect('/dashboard');
 }
 
@@ -97,6 +98,7 @@ export async function updatePost(id: string,
         return { message: 'Server Error: Failed to Update Blog.' };
     }
     revalidatePath('/dashboard');
+    revalidatePath('/');
     redirect('/dashboard');
 }
 
@@ -112,6 +114,7 @@ export async function deletePost(id: string): Promise<void> {
             throw new Error(`HTTP Error! Status: ${response.status}`);
         }
         revalidatePath('/dashboard');
+        revalidatePath('/');
     } catch (error) {
         console.error(error);
     }
