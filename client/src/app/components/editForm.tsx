@@ -114,7 +114,7 @@ export default function Form({ post }: { post: Post }) {
                     <textarea
                         id="body"
                         name="body"
-                        rows={20}
+                        rows={33}
                         className="block w-full px-0 text-sm text-gray-800 bg-white border-0 focus:ring-0 focus:outline-none focus:border-transparent"
                         placeholder="Write your blog content here..."
                         required

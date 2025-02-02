@@ -54,7 +54,7 @@ export async function createPost(prevState: State, formData: FormData) {
     }
     revalidatePath('/blog');
     revalidatePath('/admin/blog');
-    redirect('/blog');
+    redirect('/admin/blog');
 }
 
 
@@ -99,7 +99,7 @@ export async function updatePost(id: string,
     }
     revalidatePath('/blog');
     revalidatePath('/admin/blog');
-    redirect('/blog');
+    redirect('/admin/blog/' + id);
 }
 
 export async function deletePost(id: string): Promise<void> {
