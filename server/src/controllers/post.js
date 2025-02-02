@@ -55,8 +55,24 @@ const summarizePost = async (req, res, next) => {
 
 const getAllPosts = async (req, res, next) => {
     try {
-        const Posts = await Post.find({});
-        res.status(StatusCodes.OK).json({ Posts, count: Posts.length });
+        const { query, page = 1, limit = 10 } = req.query;
+
+        const searchQuery = query ? { title: { $regex: query, $options: "i" } } : {};
+
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+
+        const Posts = await Post.find(searchQuery).skip(skip).limit(parseInt(limit));
+
+        const totalPosts = await Post.countDocuments(searchQuery);
+
+        res.status(StatusCodes.OK).json({
+            Posts,
+            count: Posts.length,
+            totalPosts,
+            totalPages: Math.ceil(totalPosts / limit),
+            currentPage: parseInt(page)
+        });
+
     } catch (error) {
         next(new ApiError('Failed to retrieve posts', StatusCodes.INTERNAL_SERVER_ERROR, error.message, false));
     }

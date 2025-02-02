@@ -1,7 +1,6 @@
-import { fetchPost } from "@/app/lib/data";
 import { AdminViewPost, EditPost, DeletePost } from "./buttons";
-export default async function Card({ id }: { id: string }) {
-    const post = await fetchPost(id)
+import { Post } from "@/app/lib/definitions";
+export default async function Card({ post }: { post: Post }) {
     const title = post.title;
     const previewText = post.body.split('. ').slice(0, 2).join('. ') + '...';
     return (

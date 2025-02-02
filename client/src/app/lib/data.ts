@@ -10,11 +10,15 @@ export async function fetchPost(id: string) {
     }
 }
 
-export async function fetchPosts() {
-    try {
-        const response = await fetch('http://localhost:4000/api/posts/');
-        const data = await response.json()
+export async function fetchPosts(searchParams: { query?: string; page?: number; }) {
 
+    const { query, page } = searchParams;
+    const queryString = query ? `query=${query}&page=${page}` : `page=${page}`
+    try {
+        const url = `http://localhost:4000/api/posts${queryString ? `?${queryString}` : ""}`;
+
+        const response = await fetch(`${url}`);
+        const data = await response.json()
         return data;
     } catch (error) {
         console.error('Database Error:', error);
