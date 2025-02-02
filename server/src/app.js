@@ -10,6 +10,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+// CORS
+const cors = require('cors');
+app.use(cors());
+
 // Log incoming requests
 app.use((req, res, next) => {
     logger.info(`Incoming request: ${req.method} ${req.originalUrl}`);
@@ -24,10 +28,6 @@ app.use('/api/posts', (req, res, next) => {
     next();
 }, postRoutes);
 
-// CORS
-const cors = require('cors');
-app.use(cors());
-
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
 
@@ -37,7 +37,6 @@ app.use(express.json());
 // 404 Not Found Handler
 app.use('*', (req, res, next) => {
     const error = new ApiError('Not Found', StatusCodes.NOT_FOUND, `Cannot ${req.method} ${req.originalUrl}`, true);
-    logger.warn(error.message);
     next(error);
 });
 
