@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "clsx": "^2.1.1",
+    "emotion": "^11.0.0",
     "lucide-react": "^0.474.0",
     "next": "15.1.6",
     "next-mdx-remote": "^5.0.0",
@@ -17,7 +20,10 @@
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.3",
     "react-syntax-highlighter": "^15.6.1",
+    "rehype-katex": "^7.0.1",
+    "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.0",
+    "remark-math": "^6.0.0",
     "use-debounce": "^10.0.4",
     "zod": "^3.24.1"
   },

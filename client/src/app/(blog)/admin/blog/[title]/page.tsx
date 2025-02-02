@@ -2,6 +2,7 @@ import { fetchPost } from "@/app/lib/data";
 import { Back, EditPost, DeletePost } from "@/app/components/buttons";
 import SummarizeButton from "@/app/components/SummarizeButton";
 import { notFound } from 'next/navigation';
+import RenderMarkdown from '@/app/components/renderMarkdown';
 
 export default async function Post(props: { params: Promise<{ title: string }> }) {
     const params = await props.params;
@@ -21,7 +22,7 @@ export default async function Post(props: { params: Promise<{ title: string }> }
                 </div>
             </div>
             <h1 className="text-3xl py-4">{post.title}</h1>
-            <p className="text-slate-700 text-lg py-2 ">{post.body}</p>
+            <RenderMarkdown body={post.body} />
         </div>
     );
 
