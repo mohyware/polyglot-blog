@@ -1,5 +1,5 @@
 import { fetchPost } from "@/app/lib/data";
-import { ViewPost, EditPost, DeletePost } from "./buttons";
+import { AdminViewPost, EditPost, DeletePost } from "./buttons";
 export default async function Card({ id }: { id: string }) {
     const post = await fetchPost(id)
     const title = post.title;
@@ -9,7 +9,7 @@ export default async function Card({ id }: { id: string }) {
             <div className="flex flex-row justify-between items-center py-4">
                 <h1 className="text-2xl py-4 font-bold text-slate-900">{title}</h1>
                 <div className="flex justify-end gap-3 items-center">
-                    <ViewPost id={post._id}></ViewPost>
+                    <AdminViewPost id={post._id}></AdminViewPost>
                     <EditPost id={post._id}></EditPost>
                     <DeletePost id={post._id}></DeletePost>
                 </div>

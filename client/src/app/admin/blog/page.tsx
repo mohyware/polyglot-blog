@@ -1,7 +1,7 @@
-import Card from "../components/postCard"
-import { fetchPosts } from "../lib/data"
+import Card from "../../components/postCard"
+import { fetchPosts } from "../../lib/data"
 import { Post } from '@/app/lib/definitions';
-import { CreatePost } from "../components/buttons";
+import { CreatePost } from "../../components/buttons";
 export default async function Home() {
     const data = await fetchPosts()
     return (

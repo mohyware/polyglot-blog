@@ -1,7 +1,7 @@
 
 export async function fetchPost(id: string) {
     try {
-        const response = await fetch('http://localhost:4000/api/v1/' + id);
+        const response = await fetch('http://localhost:4000/api/posts/' + id);
         const data = await response.json()
         return data.post;
     } catch (error) {
@@ -12,7 +12,7 @@ export async function fetchPost(id: string) {
 
 export async function fetchPosts() {
     try {
-        const response = await fetch('http://localhost:4000/api/v1/');
+        const response = await fetch('http://localhost:4000/api/posts/');
         const data = await response.json()
 
         return data;
@@ -24,7 +24,7 @@ export async function fetchPosts() {
 
 export async function SummarizePost(id: string) {
     try {
-        const response = await fetch('http://localhost:4000/api/v1/summary/' + id);
+        const response = await fetch('http://localhost:4000/api/posts/summary/' + id);
         const data = await response.json()
         return data.summary;
     } catch (error) {

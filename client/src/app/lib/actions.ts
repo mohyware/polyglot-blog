@@ -31,7 +31,7 @@ export async function createPost(prevState: State, formData: FormData) {
     }
     const { title, body } = validatedFields.data;
     try {
-        const response = await fetch(`http://localhost:4000/api/v1/`, {
+        const response = await fetch(`http://localhost:4000/api/posts/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,9 +52,9 @@ export async function createPost(prevState: State, formData: FormData) {
             message: 'Server Error: Failed to Create Blog.',
         };
     }
-    revalidatePath('/dashboard');
-    revalidatePath('/');
-    redirect('/dashboard');
+    revalidatePath('/blog');
+    revalidatePath('/admin/blog');
+    redirect('/blog');
 }
 
 
@@ -78,7 +78,7 @@ export async function updatePost(id: string,
     const { title, body } = validatedFields.data;
 
     try {
-        const response = await fetch(`http://localhost:4000/api/v1/${id}`, {
+        const response = await fetch(`http://localhost:4000/api/posts/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,14 +97,14 @@ export async function updatePost(id: string,
         console.error(error);
         return { message: 'Server Error: Failed to Update Blog.' };
     }
-    revalidatePath('/dashboard');
-    revalidatePath('/');
-    redirect('/dashboard');
+    revalidatePath('/blog');
+    revalidatePath('/admin/blog');
+    redirect('/blog');
 }
 
 export async function deletePost(id: string): Promise<void> {
     try {
-        const response = await fetch(`http://localhost:4000/api/v1/${id}`, {
+        const response = await fetch(`http://localhost:4000/api/posts/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -113,8 +113,8 @@ export async function deletePost(id: string): Promise<void> {
         if (!response.ok) {
             throw new Error(`HTTP Error! Status: ${response.status}`);
         }
-        revalidatePath('/dashboard');
-        revalidatePath('/');
+        revalidatePath('/blog');
+        revalidatePath('/admin/blog');
     } catch (error) {
         console.error(error);
     }

@@ -25,7 +25,8 @@ export default function RootLayout({
             <div className="flex items-center justify-between">
               <nav className="ml-auto text-lg font-medium space-x-6">
                 <Link href="/">Home</Link>
-                <Link href="/dashboard">Dashboard</Link>
+                <Link href="/blog">Blog</Link>
+                <Link href="/admin/blog">Dashboard</Link>
                 <Link href="/about">About</Link>
               </nav>
             </div>
