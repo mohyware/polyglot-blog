@@ -1,15 +1,11 @@
-import type { Metadata } from "next";
 import "./globals.css";
-import Link from "next/link"
-import { Inter } from "next/font/google"
-
-const inter = Inter({ subsets: ["latin"] })
+import type { Metadata } from "next";
+import { inter } from '@/app/components/fonts';
 
 export const metadata: Metadata = {
   title: "Blog Application",
   description: "polyglot blog application",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -17,6 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+
       <body
         className={`antialiased min-h-screen bg-white text-slate-900  ${inter.className}`}
       >
@@ -24,10 +21,6 @@ export default function RootLayout({
           <header>
             <div className="flex items-center justify-between">
               <nav className="ml-auto text-lg font-medium space-x-6">
-                <Link href="/">Home</Link>
-                <Link href="/blog">Blog</Link>
-                <Link href="/admin/blog">Dashboard</Link>
-                <Link href="/about">About</Link>
               </nav>
             </div>
           </header>

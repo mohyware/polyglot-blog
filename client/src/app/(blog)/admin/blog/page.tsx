@@ -1,10 +1,10 @@
-import Card from "../../components/postCard"
-import { fetchPosts } from "../../lib/data"
+import Card from "../../../components/postCard"
+import { fetchPosts } from "../../../lib/data"
 import { Post } from '@/app/lib/definitions';
-import { CreatePost } from "../../components/buttons";
-import SearchBar from "../../components/search"
-import Pagination from "../../components/pagination"
-import NoResult from "../../components/noResult"
+import { CreatePost } from "../../../components/buttons";
+import SearchBar from "../../../components/search"
+import Pagination from "../../../components/pagination"
+import NoResult from "../../../components/noResult"
 export default async function Blog(props: {
     searchParams?: Promise<{
         query?: string;

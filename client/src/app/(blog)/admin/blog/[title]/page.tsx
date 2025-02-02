@@ -14,7 +14,7 @@ export default async function Post(props: { params: Promise<{ title: string }> }
         <div className="w-full">
             <div className="flex flex-row justify-between items-center py-4">
                 <Back />
-                <div className="flex flex-row space-x-4">
+                <div className="flex flex-row space-x-4 items-center">
                     <EditPost id={id} ></EditPost>
                     <DeletePost id={id}></DeletePost>
                     <SummarizeButton id={id} title={post.title}></SummarizeButton>
