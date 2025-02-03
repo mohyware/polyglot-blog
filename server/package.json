@@ -6,7 +6,10 @@
   "scripts": {
     "start": "metacall src/server.js",
     "dev": "NODE_ENV=development nodemon --exec 'metacall' src/server.js",
-    "test": "npm run test"
+    "test": "jest --watchAll --verbose --coverage"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "keywords": [
     "nodejs",
@@ -21,12 +24,15 @@
   "author": "Mohy Elden Khalid",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-validator": "^7.2.1",
     "http-status-codes": "^2.3.0",
     "metacall": "^0.4.3",
     "mongoose": "^8.9.5",

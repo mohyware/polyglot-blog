@@ -1,6 +1,5 @@
 const Post = require('../models/post');
 const { StatusCodes } = require('http-status-codes');
-const summarize = require('../services/summarize');
 const ApiError = require('../utils/api-error');
 
 const createPost = async (req, res, next) => {
@@ -40,6 +39,7 @@ const getPost = async (req, res, next) => {
 };
 
 const summarizePost = async (req, res, next) => {
+    const { summarize } = require('../services/summarize');
     const { params: { id: PostId } } = req;
     try {
         const post = await Post.findOne({ _id: PostId });
@@ -74,7 +74,7 @@ const getAllPosts = async (req, res, next) => {
         });
 
     } catch (error) {
-        next(new ApiError('Failed to retrieve posts', StatusCodes.INTERNAL_SERVER_ERROR, error.message, false));
+        next(error);
     }
 };
 

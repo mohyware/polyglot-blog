@@ -1,6 +1,6 @@
-const { metacall } = require('metacall');
 const ApiError = require('../utils/api-error');
 const { StatusCodes } = require('http-status-codes');
+const { metacall } = require('metacall');
 
 const summarize = async (data) => {
     try {
@@ -16,4 +16,4 @@ const summarize = async (data) => {
     }
 }
 
-module.exports = summarize; 
+module.exports = { summarize }; 

@@ -58,7 +58,7 @@ const errorHandler = (err, req, res, next) => {
   // Handle unexpected errors
   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     error: 'Internal Server Error',
-    message: 'Something went wrong',
+    message: err.message,
     isOperational: false,
     ...(process.env.NODE_ENV === 'development' ? { stack: err.stack } : {}), // Include stack in dev mode
   });
