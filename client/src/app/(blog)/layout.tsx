@@ -23,6 +23,9 @@ export default function Layout({
                 </header>
                 <br />
                 <main>{children}</main>
+                <footer className="py-20 text-center mt-20">
+                    <p>Footer Content Here</p>
+                </footer>
             </div>
         </div>
     );

@@ -30,3 +30,20 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
         totalPages,
     ];
 };
+
+export const hasWord = (str: string) => {
+    // Use a regex to check if the string contains at least one word character
+    return /\w+/.test(str);
+}
+
+
+export const extractHashtags = (text: string) => {
+    const hashtags = text.match(/#\w+/g) || [];
+    return hashtags.sort();
+}
+
+export const removeAfterSummary = (text: string): string => {
+    const pattern = /Summary:[\s\S]*?(?=\n## Important Topics:|$)/i;
+    const match = text.match(pattern);
+    return match ? match[0].trim() : text;
+}

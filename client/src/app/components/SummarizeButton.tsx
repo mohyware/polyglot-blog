@@ -1,18 +1,10 @@
 'use client'
 import { useState, useEffect, useRef } from "react";
 import { SummarizePost } from "../lib/data";
-
+import { Bot } from "lucide-react"
 import TypingEffect from "./TypingEffect";
 
-function extractHashtags(text: string) {
-    return text.match(/#\w+/g) || [];
-}
-
-function removeAfterSummary(text: string): string {
-    const pattern = /## Summary:[\s\S]*?(?=\n## Important Topics:|$)/;
-    const match = text.match(pattern);
-    return match ? match[0].trim() : text;
-}
+import { extractHashtags, removeAfterSummary, hasWord } from "../lib/utils";
 
 export default function SummarizeButton({ id, title }: { id: string; title: string }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,9 +12,9 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
     const [isFetching, setIsFetching] = useState(false);
     const [hasFetched, setHasFetched] = useState(false);
     const [hashtags, setHashtags] = useState<string[]>([]);
+    const [hasTypingEffect, setHasTypingEffect] = useState(false); // New state to track typing effect
 
     const modalRef = useRef<HTMLDivElement>(null);
-
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
@@ -39,19 +31,21 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
 
-
     const handleSummarizeClick = async () => {
         setIsOpen(true);
 
         // Only fetch if the summary hasn't been fetched yet
-        if (!hasFetched && !isFetching) {
+        if ((!hasFetched && !isFetching)) {
             setIsFetching(true);
             try {
-                const result = await SummarizePost(id);
+                let result = await SummarizePost(id);
+                if (!hasWord(result)) {
+                    result = "Model could not generate summary Try Again.";
+                }
                 setSummary(removeAfterSummary(result));
-                console.log(removeAfterSummary(result))
                 setHasFetched(true);
                 setHashtags(extractHashtags(result));
+                setHasTypingEffect(true); // Enable typing effect the first time
             } catch (error) {
                 console.error("Failed to fetch summary:", error);
             } finally {
@@ -60,18 +54,42 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
         }
     };
 
+    const handleTryAgain = async () => {
+        // Only fetch if the summary hasn't been fetched yet
+        setSummary("");
+        setIsFetching(true);
+        try {
+            let result = await SummarizePost(id);
+            if (!hasWord(result)) {
+                result = "          Model could not generate summary Try Again.";
+            }
+            setSummary(removeAfterSummary(result));
+            setHasFetched(true);
+            setHashtags(extractHashtags(result));
+            setHasTypingEffect(true); // Enable typing effect the first time
+        } catch (error) {
+            console.error("Failed to fetch summary:", error);
+        } finally {
+            setIsFetching(false);
+        }
+
+    };
+
+    const handleTypingComplete = () => {
+        setHasTypingEffect(false);
+    };
+
     return (
         <div className="relative inline-block">
             {/* Toggle Button */}
-            <button
-                onClick={handleSummarizeClick}
-                disabled={isFetching}
-                className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+            <div
+                className={`bg-white ${isFetching ? 'bg-gray-100 cursor-not-allowed' : 'hover:bg-gray-100'} text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow flex items-center gap-1`}
             >
                 {isFetching ? (
                     // Loading spinner
                     <svg
-                        className="animate-spin h-5 w-5 text-gray-800"
+                        key="spinner"
+                        className="animate-spin h-6 w-6 text-gray-800"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -91,17 +109,25 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
                         ></path>
                     </svg>
                 ) : (
-                    // Button text
-                    "Summarize"
+                    < Bot key="bot" className="h-6 w-6" />
                 )}
-
-            </button>
-
+                Summarize
+                <button
+                    onClick={handleSummarizeClick}
+                    disabled={isFetching}
+                    className="absolute inset-0 bg-transparent text-center"
+                >
+                </button>
+            </div>
+            {/* TODO: make it responsive */}
             {/* Modal Positioned Beside Button */}
             {isOpen && hasFetched && (
-                <div ref={modalRef} className="absolute left-full top-0 ml-8 w-[400px] rounded overflow-hidden shadow-lg bg-white border border-gray-300">
+                <div ref={modalRef}
+                    className="lg:absolute lg:left-full lg:top-0 lg:ml-8 w-[400px] rounded overflow-hidden shadow-lg bg-white border border-gray-300
+                    "
+                >
                     <div className="px-6 py-2">
-                        <div className="flex items-center justify-between p-4 md:p-5 rounded-t border-b">
+                        <div className="flex items-center justify-between  py-3  rounded-t border-b">
                             <div className="font-bold text-xl ">{title}</div>
                             <button
                                 type="button"
@@ -114,13 +140,25 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
                                 <span className="sr-only">Close modal</span>
                             </button>
                         </div>
-                        <TypingEffect text={summary} />
+                        {hasTypingEffect ? (
+                            <TypingEffect text={summary} onComplete={handleTypingComplete} />
+                        ) : (
+                            <div className="text-gray-700 text-base py-2">{summary}</div>
+                        )}
                     </div>
                     <div className="px-6 pt-4 pb-2">
                         {hashtags.map((hashtag, index) => (
                             <span key={index} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{hashtag}</span>
 
                         ))}
+                        <div className="flex justify-center py-2">
+
+                            {<button onClick={handleTryAgain}
+                                className={`bg-white ${isFetching ? 'bg-gray-100 cursor-not-allowed' : 'hover:bg-gray-100'} text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow flex items-center gap-1`}
+                            >
+                                Summarize Again?
+                            </button>}
+                        </div>
                     </div>
                 </div>
             )}
