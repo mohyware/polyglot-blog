@@ -57,6 +57,7 @@ export default function Form() {
                 value={formData.title}
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your blog title..."
+                maxLength={50}
             ></textarea>
             {/* legacy error */}
             {/* <div id="title-error" aria-live="polite" aria-atomic="true">
@@ -91,6 +92,7 @@ export default function Form() {
                         value={formData.body}
                         className="block w-full px-0 text-sm text-gray-800 bg-white border-0 focus:ring-0 focus:outline-none focus:border-transparent"
                         placeholder="Write your blog content here..."
+                        maxLength={6000}
                     ></textarea>
                 </div>
             </div>
