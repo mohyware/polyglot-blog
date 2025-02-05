@@ -1,11 +1,12 @@
 # Polyglot Blog Application
-The backend of this polyglot blog application will be responsible for managing blog posts and user interactions. It will be implemented using Node.js and expose REST APIs for creating, editing, and retrieving blog posts.
+This full-stack blog application supports CRUD operations for blog posts, which can be written and rendered in Markdown. It also features a summarization capability powered by Python through MetaCall, offering a variety of AI services to choose from.
 
 ## Features
 1. 📝 Create, edit, and delete blog posts
 2. 🔍 Retrieve blog posts via REST APIs
-3. 🤖 AI-Powered Summarization (via Hugging Face API & Python)
-
+3. 📄 Write and render blog posts in Markdown
+4. 🤖 AI-Powered Summarization (via Python & MetaCall)
+5. ⚡ Supports multiple AI services for summarization (e.g., Gemini, Hugging Face, Claude, OpenAI, etc.)
 ## Requirements
 Ensure you have the following installed before running the application:
 1. Nodejs
@@ -16,7 +17,13 @@ Before running the project, navigate to the server directory, rename .env.exampl
 ```bash
 MONGO_URI=your_mongodb_connection_string
 PORT=4000
-HUGGING_FACE_KEY=your_huggingface_api_key
+
+HUGGING_FACE_KEY=your_api_key
+OPENAI_API_KEY=your_api_key
+GEMINI_KEY=your_api_key
+EDEN_Authorization=your_api_key
+ANTHROPIC_API_KEY=your_api_key
+DEEPSEEK_API_KEY=your_api_key
 ```
 ## Installation
 1. Clone the repository:
@@ -34,7 +41,7 @@ curl -sL https://raw.githubusercontent.com/metacall/install/master/install.sh | 
 ```bash
 cd server
 metacall npm install
-metacall pip3 install dotenv huggingface_hub
+metacall pip3 install dotenv huggingface_hub openai anthropic genai
 ```
 4. Frontend (Client) Setup
 ```bash
@@ -58,3 +65,13 @@ npm run build  # Build the project before running start
 npm start      # Run production mode
 ```
 3. Open your browser and navigate to http://localhost:3000
+## Run tests
+You can run tests by executing the following command:
+```bash
+cd client
+npm run test
+```
+```bash
+cd server
+npm run test
+```
