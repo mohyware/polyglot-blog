@@ -1,13 +1,29 @@
 "use client";
 import Link from 'next/link';
-import { deletePost } from '../lib/actions'
+import { deletePost, State, updateServer } from '../lib/actions'
 import { useRouter } from "next/navigation";
 import { Trash2, Pencil, Eye, PlusCircle } from "lucide-react";
+import { useActionState, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 
 export function DeletePost({ id }: { id: string }) {
+  const initialState: State = { message: '', success: false };
   const deletePostWithId = deletePost.bind(null, id);
+  const [state, formAction] = useActionState(deletePostWithId, initialState);
+  useEffect(() => {
+    if (state.message) {
+      if (state.success) {
+        toast.success(state.message);
+        updateServer();
+      }
+      else {
+        toast.error(`${state.message}`);
+      }
+    }
+  }, [state.message, state.success]);
+
   return (
-    <form action={deletePostWithId}>
+    <form action={formAction}>
       <button type="submit"
         className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
       >

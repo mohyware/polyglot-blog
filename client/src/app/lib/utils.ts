@@ -43,7 +43,9 @@ export const extractHashtags = (text: string) => {
 }
 
 export const removeAfterSummary = (text: string): string => {
-    const pattern = /Summary:[\s\S]*?(?=\n## Important Topics:|$)/i;
-    const match = text.match(pattern);
-    return match ? match[0].trim() : text;
+    text = text.replace(/#\w+|[^\w\s]|_/g, '');
+    const pattern = /Important Topics[\s\S]*/i;
+    const result = text.replace(pattern, '').trim();
+
+    return result;
 }

@@ -3,17 +3,28 @@ import { useState, useEffect, useRef } from "react";
 import { SummarizePost } from "../lib/data";
 import { Bot } from "lucide-react"
 import TypingEffect from "./TypingEffect";
+import { toast } from 'react-hot-toast';
 
 import { extractHashtags, removeAfterSummary, hasWord } from "../lib/utils";
 
 export default function SummarizeButton({ id, title }: { id: string; title: string }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [summary, setSummary] = useState("");
     const [isFetching, setIsFetching] = useState(false);
     const [hasFetched, setHasFetched] = useState(false);
+    const [hasTypingEffect, setHasTypingEffect] = useState(false);
+    const [summary, setSummary] = useState("");
     const [hashtags, setHashtags] = useState<string[]>([]);
-    const [hasTypingEffect, setHasTypingEffect] = useState(false); // New state to track typing effect
 
+    // Retrieve model from localStorage
+    const [selectedModel, setSelectedModel] = useState("");
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const model = localStorage.getItem("selectedModel");
+            setSelectedModel(model || "gemini");
+        }
+    }, []);
+
+    // Detect clicks outside of the modal and close it
     const modalRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -31,50 +42,58 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
 
+    // Only fetch if the summary hasn't been fetched yet
     const handleSummarizeClick = async () => {
         setIsOpen(true);
-
-        // Only fetch if the summary hasn't been fetched yet
         if ((!hasFetched && !isFetching)) {
             setIsFetching(true);
             try {
-                let result = await SummarizePost(id);
+                let result = await SummarizePost(id, selectedModel);
+                if (result.error) {
+                    throw new Error(result.error)
+                }
+                console.log(result)
                 if (!hasWord(result)) {
-                    result = "Model could not generate summary Try Again.";
+                    result = "Model could not generate summary Try Again or change The Model.";
                 }
                 setSummary(removeAfterSummary(result));
                 setHasFetched(true);
                 setHashtags(extractHashtags(result));
                 setHasTypingEffect(true); // Enable typing effect the first time
             } catch (error) {
-                console.error("Failed to fetch summary:", error);
+                console.log(error)
+                toast.error("This Model is not Working Right Now Try Again or change The Model.");
             } finally {
                 setIsFetching(false);
             }
         }
     };
 
+    // fetch the summary again
     const handleTryAgain = async () => {
-        // Only fetch if the summary hasn't been fetched yet
         setSummary("");
         setIsFetching(true);
         try {
-            let result = await SummarizePost(id);
+            let result = await SummarizePost(id, selectedModel);
+            if (result.error) {
+                throw new Error(result.error)
+            }
             if (!hasWord(result)) {
-                result = "          Model could not generate summary Try Again.";
+                result = "Model could not generate summary Try Again or change The Model.";
             }
             setSummary(removeAfterSummary(result));
             setHasFetched(true);
             setHashtags(extractHashtags(result));
             setHasTypingEffect(true); // Enable typing effect the first time
         } catch (error) {
-            console.error("Failed to fetch summary:", error);
+            console.log(error)
+            toast.error("This Model is not Working Right Now Try Again or change The Model.");
         } finally {
             setIsFetching(false);
         }
-
     };
 
+    // No typing effect after the first time 
     const handleTypingComplete = () => {
         setHasTypingEffect(false);
     };
@@ -128,7 +147,9 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
                 >
                     <div className="px-6 py-2">
                         <div className="flex items-center justify-between  py-3  rounded-t border-b">
+                            {/* Title */}
                             <div className="font-bold text-xl ">{title}</div>
+                            {/* Close Button */}
                             <button
                                 type="button"
                                 className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex justify-center items-center"
@@ -140,19 +161,21 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
                                 <span className="sr-only">Close modal</span>
                             </button>
                         </div>
+                        {/* Summary */}
                         {hasTypingEffect ? (
                             <TypingEffect text={summary} onComplete={handleTypingComplete} />
                         ) : (
                             <div className="text-gray-700 text-base py-2">{summary}</div>
                         )}
                     </div>
+                    {/* Hashtags */}
                     <div className="px-6 pt-4 pb-2">
                         {hashtags.map((hashtag, index) => (
                             <span key={index} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{hashtag}</span>
 
                         ))}
                         <div className="flex justify-center py-2">
-
+                            {/* Try Again Button */}
                             {<button onClick={handleTryAgain}
                                 className={`bg-white ${isFetching ? 'bg-gray-100 cursor-not-allowed' : 'hover:bg-gray-100'} text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow flex items-center gap-1`}
                             >

@@ -1,7 +1,7 @@
 'use server';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+const baseUrl = process.env.API_URL;
 
 // Use Zod to update the expected types
 const FormSchema = z.object({
@@ -14,7 +14,8 @@ export type State = {
         title?: string[];
         body?: string[];
     };
-    message?: string | null;
+    message: string;
+    success: boolean;
 };
 
 export async function createPost(prevState: State, formData: FormData) {
@@ -27,11 +28,12 @@ export async function createPost(prevState: State, formData: FormData) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
             message: 'Missing Fields. Failed to Create Blog.',
+            success: false,
         };
     }
     const { title, body } = validatedFields.data;
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/`, {
+        const response = await fetch(`${baseUrl}/posts/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,22 +48,23 @@ export async function createPost(prevState: State, formData: FormData) {
             throw new Error(`HTTP Error! Status: ${response.status}`);
         }
 
+        revalidatePath('/blog');
+        revalidatePath('/admin/blog');
+        return {
+            message: 'Your post has been created successfully!',
+            success: true,
+        };
     } catch (error) {
         console.error(error);
         return {
             message: 'Server Error: Failed to Create Blog.',
+            success: false,
         };
     }
-    revalidatePath('/blog');
-    revalidatePath('/admin/blog');
-    redirect('/admin/blog');
 }
 
 
-export async function updatePost(id: string,
-    prevState: State,
-    formData: FormData,
-) {
+export async function updatePost(id: string, prevState: State, formData: FormData) {
     const UpdatePost = FormSchema.omit({ _id: true });
     const validatedFields = UpdatePost.safeParse({
         title: formData.get('title'),
@@ -72,13 +75,14 @@ export async function updatePost(id: string,
         return {
             errors: validatedFields.error.flatten().fieldErrors,
             message: 'Missing Fields. Failed to Update Blog.',
+            success: false,
         };
     }
 
     const { title, body } = validatedFields.data;
 
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/${id}`, {
+        const response = await fetch(`${baseUrl}/posts/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -93,18 +97,25 @@ export async function updatePost(id: string,
             throw new Error(`HTTP Error! Status: ${response.status}`);
         }
 
+        revalidatePath('/blog');
+        revalidatePath('/admin/blog');
+        // Return success message on successful update
+        return {
+            message: 'Post updated successfully',
+            success: true,
+        };
     } catch (error) {
         console.error(error);
-        return { message: 'Server Error: Failed to Update Blog.' };
+        return {
+            message: 'Server Error: Failed to Update Blog.',
+            success: false
+        };
     }
-    revalidatePath('/blog');
-    revalidatePath('/admin/blog');
-    redirect('/admin/blog/' + id);
 }
 
-export async function deletePost(id: string): Promise<void> {
+export async function deletePost(id: string) {
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/${id}`, {
+        const response = await fetch(`${baseUrl}/posts/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -113,9 +124,20 @@ export async function deletePost(id: string): Promise<void> {
         if (!response.ok) {
             throw new Error(`HTTP Error! Status: ${response.status}`);
         }
-        revalidatePath('/blog');
-        revalidatePath('/admin/blog');
+        return {
+            message: 'Post deleted successfully',
+            success: true,
+        };
     } catch (error) {
         console.error(error);
+        return {
+            message: 'Server Error: Failed to Delete Blog.',
+            success: false
+        };
     }
+}
+
+export async function updateServer() {
+    revalidatePath('/blog');
+    revalidatePath('/admin/blog');
 }

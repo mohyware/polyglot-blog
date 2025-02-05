@@ -17,6 +17,7 @@ export default function Layout({
                         <nav className="ml-auto text-lg font-medium space-x-6">
                             <Link href="/blog">Blog</Link>
                             <Link href="/admin/blog">Dashboard</Link>
+                            <Link href="/service">Service</Link>
                             <Link href="/about">About</Link>
                         </nav>
                     </div>
