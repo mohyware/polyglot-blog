@@ -40,13 +40,13 @@ const getPost = async (req, res, next) => {
 
 const summarizePost = async (req, res, next) => {
     const { summarize } = require('../services/summarize');
-    const { params: { id: PostId } } = req;
+    const { query: { service }, params: { id: PostId } } = req;
     try {
         const post = await Post.findOne({ _id: PostId });
         if (!post) {
             throw new ApiError(`No post found with id ${PostId}`, StatusCodes.NOT_FOUND, 'Post not found', true);
         }
-        const summary = await summarize(post.body);
+        const summary = await summarize(post.body, service);
         res.status(StatusCodes.OK).json({ summary });
     } catch (error) {
         next(error);
