@@ -110,7 +110,9 @@ export default function Form() {
                     </p>)}
             </div> */}
             <div className="flex gap-4">
-                <button type="submit" className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200  hover:bg-blue-800">
+                <button type="submit"
+                    className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+                >
                     Publish post
                 </button>
                 <Back></Back>

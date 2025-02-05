@@ -19,7 +19,7 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
     const [selectedModel, setSelectedModel] = useState("");
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const model = localStorage.getItem("selectedModel");
+            const model = localStorage.getItem("selectedService");
             setSelectedModel(model || "gemini");
         }
     }, []);
@@ -142,7 +142,7 @@ export default function SummarizeButton({ id, title }: { id: string; title: stri
             {/* Modal Positioned Beside Button */}
             {isOpen && hasFetched && (
                 <div ref={modalRef}
-                    className="lg:absolute lg:left-full lg:top-0 lg:ml-8 w-[400px] rounded overflow-hidden shadow-lg bg-white border border-gray-300
+                    className="absolute left-full top-0 ml-8 w-[400px] rounded overflow-hidden shadow-lg bg-white border border-gray-300
                     "
                 >
                     <div className="px-6 py-2">

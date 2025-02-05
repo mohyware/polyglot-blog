@@ -25,7 +25,6 @@ def get_eden_response(user_input):
 
         response = requests.post(url, json=payload, headers=headers)
         result = json.loads(response.text)
-        print(result)
         return result['microsoft']['result']
 
 print("EDEN AI is loaded")

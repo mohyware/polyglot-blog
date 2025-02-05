@@ -2,25 +2,25 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 export default function ServiceSelector() {
-    const [selectedService, setSelectedService] = useState(() => {
-        if (typeof window !== "undefined") {
-            const savedService = localStorage.getItem("selectedService");
-            return savedService ? savedService : "gemini";
-        }
-    });
+    const [selectedService, setSelectedService] = useState<string | null>(null);
 
     useEffect(() => {
-        if (selectedService) {
-            if (typeof window !== "undefined") {
-                localStorage.setItem("selectedModel", selectedService);
-            }
+        if (typeof window !== "undefined") {
+            const savedService = localStorage.getItem("selectedService") || "gemini";
+            setSelectedService(savedService);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (selectedService !== null) {
+            localStorage.setItem("selectedService", selectedService);
         }
     }, [selectedService]);
 
     const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newService = e.target.value;
         setSelectedService(newService);
-        // Display toast when the model changes
+        // Display toast when the service changes
         toast.success(`Service changed to: ${newService}`);
     };
 
@@ -31,7 +31,7 @@ export default function ServiceSelector() {
                 <div className="py-3">
                     <select id="countries"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value={selectedService}
+                        value={selectedService || "gemini"}
                         onChange={handleServiceChange}
                     >
                         <option value="gemini">Gemini 1.5 Flash</option>
