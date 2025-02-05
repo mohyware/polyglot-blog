@@ -6,7 +6,7 @@ api_key = os.environ.get("DEEPSEEK_API_KEY")
 if not api_key:
     raise ValueError("DeepSeek API key is not set in the environment variables.")
 def get_deepseek_response(user_input):
-        client = openai.OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com")
+        client = openai.OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
 
         prompt = f"""
         Please summarize the following text.  
