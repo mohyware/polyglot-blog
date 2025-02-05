@@ -12,7 +12,9 @@ describe("Card Component", () => {
     const mockPost: Post = {
         _id: "123",
         title: "Test Post Title",
-        body: "This is a sample post body. It has multiple sentences. Here is another one.",
+        body: "This is a sample post body. It has multiple sentences...",
+        createdAt: new Date().toString(),
+        updatedAt: new Date().toString(),
     };
 
     it("renders post title", () => {

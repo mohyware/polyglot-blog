@@ -130,10 +130,11 @@ describe('Post Controller', () => {
             summarize: jest.fn()
         }));
 
-        it('should return a summary of the post body with status 200', async () => {
+        it('should return a summary of the post body with status 200 with default service (gemini)', async () => {
             const postId = '12345';
             const post = { _id: postId, title: 'Test Post', body: 'This is a test post body.' };
             const summary = 'This is a summarized test post body.';
+            const service = 'gemini';
 
             // Mock the summarize service
             const mockSummary = require('../src/services/summarize').summarize;
@@ -143,7 +144,27 @@ describe('Post Controller', () => {
             const response = await request(app).get(`/api/posts/summary/${postId}`);
 
             expect(Post.findOne).toHaveBeenCalledWith({ _id: postId });
-            expect(summarize).toHaveBeenCalledWith(post.body);
+            expect(summarize).toHaveBeenCalledWith(post.body, service);
+
+            expect(response.status).toBe(StatusCodes.OK);
+            expect(response.body.summary).toBe(summary);
+        });
+
+        it('should return a summary of the post body with status 200 with the passed service', async () => {
+            const postId = '12345';
+            const post = { _id: postId, title: 'Test Post', body: 'This is a test post body.' };
+            const summary = 'This is a summarized test post body.';
+            const service = 'openai';
+
+            // Mock the summarize service
+            const mockSummary = require('../src/services/summarize').summarize;
+            mockSummary.mockReturnValue(summary);
+            // Mocking found post
+            Post.findOne.mockResolvedValue(post);
+            const response = await request(app).get(`/api/posts/summary/${postId}?service=${service}`);
+
+            expect(Post.findOne).toHaveBeenCalledWith({ _id: postId });
+            expect(summarize).toHaveBeenCalledWith(post.body, service);
 
             expect(response.status).toBe(StatusCodes.OK);
             expect(response.body.summary).toBe(summary);
@@ -169,6 +190,7 @@ describe('Post Controller', () => {
                 _id: '132',
                 body: 'This is a long post that needs to be summarized.',
             };
+            const service = 'gemini';
 
             // Mock Post.findOne to return a valid post
             Post.findOne.mockResolvedValue(mockPost);
@@ -179,10 +201,9 @@ describe('Post Controller', () => {
 
             const res = await request(app).get(`/api/posts/summary/${mockPost._id}`)
             expect(Post.findOne).toHaveBeenCalledWith({ _id: mockPost._id });
-            expect(summarize).toHaveBeenCalledWith(mockPost.body);
+            expect(summarize).toHaveBeenCalledWith(mockPost.body, service);
 
             // Assertions
-            expect(mockSummarize).toHaveBeenCalledWith(mockPost.body);
             expect(res.body).toHaveProperty('message', 'Summarization failed');
             expect(Post.findOne).toHaveBeenCalledWith({ _id: mockPost._id });
         });

@@ -2,11 +2,11 @@ const ApiError = require('../utils/api-error');
 const { StatusCodes } = require('http-status-codes');
 const { metacall } = require('metacall');
 
-const summarize = async (data, service = 'gemini') => {
+const summarize = async (data, service) => {
     const services = ['gemini', 'huggingface', 'claude', 'deepseek', 'openai', 'eden'];
     if (!services.includes(service)) {
         throw new ApiError(
-            'Model was not found',
+            'Service was not found',
             StatusCodes.NOT_FOUND
         );
     }
@@ -15,7 +15,7 @@ const summarize = async (data, service = 'gemini') => {
         return response;
     } catch (error) {
         throw new ApiError(
-            'Failed to call Models API',
+            'Failed to call Service API',
             StatusCodes.BAD_GATEWAY,
             error.message,
             true

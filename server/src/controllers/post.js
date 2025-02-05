@@ -40,7 +40,7 @@ const getPost = async (req, res, next) => {
 
 const summarizePost = async (req, res, next) => {
     const { summarize } = require('../services/summarize');
-    const { query: { service }, params: { id: PostId } } = req;
+    const { query: { service = 'gemini' }, params: { id: PostId } } = req;
     try {
         const post = await Post.findOne({ _id: PostId });
         if (!post) {
