@@ -1,5 +1,9 @@
 # Polyglot Blog Application
+
+## Overview
 This full-stack blog application supports CRUD operations for blog posts, which can be written and rendered in Markdown. It also features a summarization capability powered by Python through MetaCall, offering a variety of AI services to choose from.
+## Showcase
+[Showcase Link ](https://drive.google.com/file/d/1elCS0HcQmUdFkNAfvnPR6Zx2y8el4Xs6/view?usp=sharing)
 
 ## Features
 1. 📝 Create, edit, and delete blog posts
