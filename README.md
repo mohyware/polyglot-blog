@@ -3,7 +3,7 @@
 ## Overview
 This full-stack blog application supports CRUD operations for blog posts, which can be written and rendered in Markdown. It also features a summarization capability powered by Python through MetaCall, offering a variety of AI services to choose from.
 ## Showcase
-![Video](./showcase/showcase.mp4)
+![Showcase Video](./showcase/showcase.mp4)
 ## Features
 1. 📝 Create, edit, and delete blog posts
 2. 🔍 Retrieve blog posts via REST APIs
