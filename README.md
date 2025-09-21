@@ -4,6 +4,9 @@
 This full-stack blog application supports CRUD operations for blog posts, which can be written and rendered in Markdown. It also features a summarization capability powered by Python through MetaCall, offering a variety of AI services to choose from.
 ## Showcase
 [Showcase Link](https://drive.google.com/file/d/1elCS0HcQmUdFkNAfvnPR6Zx2y8el4Xs6/view?usp=sharing)
+
+https://github.com/user-attachments/assets/9b69327a-c469-4c7a-941f-5815b8d44ed0
+
 ## Features
 1. 📝 Create, edit, and delete blog posts
 2. 🔍 Retrieve blog posts via REST APIs
@@ -77,4 +80,5 @@ npm run test
 ```bash
 cd server
 npm run test
+
 ```
